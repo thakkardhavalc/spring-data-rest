@@ -18,6 +18,5 @@ class BeerControllerTest {
     void getBeerById() {
 
         log.debug(String.valueOf(beerController.getBeerById(UUID.randomUUID())));
-
     }
 }

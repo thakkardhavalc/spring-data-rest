@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,8 +21,8 @@ public class BeerServiceImpl implements BeerService {
     private final Map<UUID, Beer> beerMap;
 
 
-    public BeerServiceImpl(Map<UUID, Beer> beerMap) {
-        this.beerMap = beerMap;
+    public BeerServiceImpl() {
+        this.beerMap = new HashMap<>();
 
         Beer beer1 = Beer.builder()
                 .id(UUID.randomUUID())

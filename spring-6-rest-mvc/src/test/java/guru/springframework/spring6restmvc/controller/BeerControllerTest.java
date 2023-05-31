@@ -36,7 +36,7 @@ class BeerControllerTest {
     @MockBean
     BeerService beerService;
 
-    BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+    BeerServiceImpl beerServiceImpl;
 
     @BeforeEach
     void setUp() {

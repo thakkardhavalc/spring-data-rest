@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,8 +17,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final Map<UUID, Customer> customerMap;
 
-    public CustomerServiceImpl(Map<UUID, Customer> customerMap) {
-        this.customerMap = customerMap;
+    public CustomerServiceImpl() {
+        this.customerMap = new HashMap<>();
 
         Customer customer1 = Customer.builder()
                 .id(UUID.randomUUID())

@@ -1,4 +1,8 @@
 
+    drop table if exists beer;
+
+    drop table if exists customer;
+
     create table beer (
         beer_style tinyint not null check (beer_style between 0 and 9),
         price decimal(38,2) not null,

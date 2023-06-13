@@ -4,29 +4,33 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.sql.Timestamp;
 import java.util.UUID;
+
+/**
+ * Created By dhaval on 2023-06-13
+ */
 
 @Getter
 @Setter
-@Builder
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
-
+@AllArgsConstructor
+@Builder
+public class BeerOrder {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -34,16 +38,23 @@ public class Customer {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String customerName;
-
-    @Column(length = 255)
-    private String email;
-
     @Version
-    private Integer version;
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
+    private Long version;
 
-    @OneToMany(mappedBy = "customer")
-    private Set<BeerOrder> beerOrders;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
+
+    public boolean isNew() {
+        return this.id == null;
+    }
+
+    private String customerRef;
+
+    @ManyToOne
+    private Customer customer;
+
 }

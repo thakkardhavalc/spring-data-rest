@@ -1,5 +1,6 @@
 package guru.springframework.spring6restmvc.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,8 +43,8 @@ public class BeerOrder {
         this.lastModifiedDate = lastModifiedDate;
         this.customerRef = customerRef;
         this.setCustomer(customer);
-        this.beerOrderShipment = beerOrderShipment;
         this.beerOrderLines = beerOrderLines;
+        this.setBeerOrderShipment(beerOrderShipment);
     }
 
     @Id
@@ -72,12 +73,17 @@ public class BeerOrder {
     @ManyToOne
     private Customer customer;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private BeerOrderShipment beerOrderShipment;
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
         customer.getBeerOrders().add(this);
+    }
+
+    public void setBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
+        this.beerOrderShipment = beerOrderShipment;
+        beerOrderShipment.setBeerOrder(this);
     }
 
     @OneToMany(mappedBy = "beerOrder")

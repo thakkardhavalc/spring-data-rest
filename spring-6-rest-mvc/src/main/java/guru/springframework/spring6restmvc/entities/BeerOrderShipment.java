@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -20,31 +18,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.UUID;
 
 /**
- * Created By dhaval on 2023-06-13
+ * Created By dhaval on 2023-06-14
  */
-
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
 @Builder
-public class BeerOrder {
-
-    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef,
-                     Customer customer, BeerOrderShipment beerOrderShipment, Set<BeerOrderLine> beerOrderLines) {
-        this.id = id;
-        this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.customerRef = customerRef;
-        this.setCustomer(customer);
-        this.beerOrderShipment = beerOrderShipment;
-        this.beerOrderLines = beerOrderLines;
-    }
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class BeerOrderShipment {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -63,24 +48,13 @@ public class BeerOrder {
     @UpdateTimestamp
     private Timestamp lastModifiedDate;
 
-    public boolean isNew() {
-        return this.id == null;
-    }
-
-    private String customerRef;
-
-    @ManyToOne
-    private Customer customer;
+    private String trackingNumber;
 
     @OneToOne
-    private BeerOrderShipment beerOrderShipment;
+    private BeerOrder beerOrder;
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-        customer.getBeerOrders().add(this);
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
-
-    @OneToMany(mappedBy = "beerOrder")
-    private Set<BeerOrderLine> beerOrderLines;
-
 }
